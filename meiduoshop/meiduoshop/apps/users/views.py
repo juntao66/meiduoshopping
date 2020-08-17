@@ -5,8 +5,13 @@ from django.db import DatabaseError
 from users.models import User
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
+class UserInfoView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'user_center_info.html')
+
+
 class LogoutView(View):
     def get(self, request):
         logout(request)
