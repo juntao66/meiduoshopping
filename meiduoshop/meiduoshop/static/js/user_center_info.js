@@ -59,20 +59,7 @@ var vm = new Vue({
                 responseType: 'json',
                 withCredentials: true
             })
-                .then(response => {
-                    if (response.data.code == 400) {
-                        location.href = 'login.html'
-                        return
-                    }
-                    this.username = response.data.info_data.username;
-                    this.mobile = response.data.info_data.mobile;
-                    this.email = response.data.info_data.email;
-                    this.email_active = response.data.info_data.email_active;
-                })
-                .catch(error => {
-                    this.set_email = false
-                    location.href = 'login.html'
-                })
+              
         },
         // 保存email
         save_email: function () {
@@ -85,7 +72,7 @@ var vm = new Vue({
             }
 
             // 进行前端页面请求:
-            var url = this.host + '/emails/'
+            var url = this.host + '/email/'
             axios.put(url,
                 {
                     email: this.email

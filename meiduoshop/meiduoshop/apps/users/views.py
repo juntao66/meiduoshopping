@@ -6,10 +6,30 @@ from users.models import User
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+import json
 # Create your views here.
+class EmailView(View):
+    def put(self, request):
+        json_str = request.body.decode()
+        json_dict = json.loads(json_str)
+        email = json_dict.get('email')
+        try:
+            request.user.email = email
+            request.user.save()
+        except Exception as e:
+            return http.JsonResponse({'code':400})
+
+        return http.JsonResponse({'code':0,'errmsg':'ok'})
+
 class UserInfoView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'user_center_info.html')
+        context = {
+            'username':request.user.username,
+            'mobile':request.user.mobile,
+            'email':request.user.email,
+            'email_active':request.user.email_active
+        }
+        return render(request, 'user_center_info.html', context)
 
 
 class LogoutView(View):

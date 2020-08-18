@@ -63,20 +63,7 @@ var vm = new Vue({
                                 return_url = '/index.html';
                             }
                             location.href = return_url;
-                        } else if (response.data.code == 400) {
-                            this.error_pwd_message = '用户名或密码错误';
-                             this.error_pwd = true;
                         }
-                    })
-                    .catch(error => {
-                        if (error.response.status == 400) {
-                            this.error_pwd_message = '用户名或密码错误';
-                        } else {
-                            this.error_pwd_message = '服务器错误';
-                        }
-                        this.error_pwd = true;
-                    })
-            }
         },
         // 用户点击 QQ第三方登录按钮之后, 触发该方法:
         qq_login: function () {
