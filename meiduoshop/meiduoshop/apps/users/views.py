@@ -7,7 +7,12 @@ from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
+#from celery_tasks.email.tasks import send_email_verify_url
 # Create your views here.
+class AddressView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'user_center_site.html')
+
 class EmailView(View):
     def put(self, request):
         json_str = request.body.decode()
@@ -18,7 +23,7 @@ class EmailView(View):
             request.user.save()
         except Exception as e:
             return http.JsonResponse({'code':400})
-
+        #send_email_verify_url.delay(email,  'www.itcast.cn')
         return http.JsonResponse({'code':0,'errmsg':'ok'})
 
 class UserInfoView(LoginRequiredMixin, View):

@@ -22,4 +22,6 @@ urlpatterns = [
     url(r'^', include('users.urls',  namespace='users')),
     #contents
     url(r'^', include('contents.urls',  namespace='contents')),
+    #areas
+    url(r'^',  include('areas.urls')),
 ]

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'contents', #firstpage
+    'areas',
 ]
 
 MIDDLEWARE = [
@@ -163,5 +164,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 AUTH_USER_MODEL = 'users.User'
 
 LOGIN_URL = '/login/'
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.yeah.net'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'dailyfreshzxc@yeah.net'
+EMAIL_HOST_PASSWORD = 'dailyfresh123'
+EMAIL_FROM = 'shopping<dailyfreshzxc@yeah.net>'
 
 
