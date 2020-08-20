@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^info/$', views.UserInfoView.as_view(), name='info'),
     url(r'^email/$', views.EmailView.as_view()),
     url(r'^addresses/$', views.AddressView.as_view(), name='address'),
+    url(r'^addresses/create/$', views.AddressCreateView.as_view()),
 ]

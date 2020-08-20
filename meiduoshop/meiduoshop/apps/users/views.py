@@ -9,6 +9,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 #from celery_tasks.email.tasks import send_email_verify_url
 # Create your views here.
+class AddressCreateView(View):
+    def post(self, request):
+        pass
+
 class AddressView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'user_center_site.html')

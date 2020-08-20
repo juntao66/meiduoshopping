@@ -17,3 +17,21 @@ class AreasView(View):
                 }
                 p_list.append(p_dict)
             return http.JsonResponse({'code':0, 'errmsg':'ok','province':p_list})
+        else:
+            parent_model = Area.objects.get(id=area_id)
+            sub_model_list = parent_model.subs.all()
+
+            subs=[]
+            for sub_model in sub_model_list:
+                sub_dict = {
+                    'id':sub_model.id,
+                    'name':sub_model.name,
+                }
+                subs.append(sub_dict)
+            sub_data = {
+                'id':parent_model.id,
+                'name':parent_model.name,
+                'subs':subs
+            }
+
+            return http.JsonResponse({'code':0, 'errmsg':'ok', 'sub_data':sub_data})
