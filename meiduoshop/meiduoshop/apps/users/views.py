@@ -2,20 +2,72 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django import http
 from django.db import DatabaseError
-from users.models import User
+from users.models import User, Address
 from django.urls import reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
 #from celery_tasks.email.tasks import send_email_verify_url
 # Create your views here.
-class AddressCreateView(View):
+
+class AddressCreateView(LoginRequiredMixin,View):
     def post(self, request):
-        pass
+        json_str = request.body.decode()
+        json_dict = json.loads(json_str)
+        receiver = json_dict.get('receiver')
+        province_id = json_dict.get('province_id')
+        city_id = json_dict.get('city_id')
+        district_id = json_dict.get('district_id')
+        place = json_dict.get('place')
+        mobile = json_dict.get('mobile')
+        tel = json_dict.get('tel')
+        email = json_dict.get('email')
+
+        address = Address.objects.create(
+            user=request.user,
+            tittle = receiver,
+            receiver = receiver,
+            mobiel=mobile,
+            tel=tel,
+            email=email
+        )
+        return http.JsonResponse({'code':0, 'errmsg':'ok'})
 
 class AddressView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'user_center_site.html')
+    def post(self, request):
+        """查询收货地址"""
+        # 核心逻辑：查询当前登录用户未被逻辑删除的地址
+        address_model_list = request.user.addresses.filter(is_deleted=False)
+
+        # 将地址模型列表转字典列表
+        address_dict_list = []
+        for address in address_model_list:
+            address_dict = {
+                "id": address.id,
+                "title": address.title,
+                "receiver": address.receiver,
+                "province": address.province.name,
+                "city": address.city.name,
+                "district": address.district.name,
+                "place": address.place,
+                "mobile": address.mobile,
+                "tel": address.tel,
+                "email": address.email
+            }
+            address_dict_list.append(address_dict)
+
+        # 查询当前登录用户默认地址的ID
+        default_address_id = request.user.default_address_id
+
+        return http.JsonResponse({
+            "code":0,
+            "errmsg":"ok",
+            "default_address_id":default_address_id,
+            "addresses":address_dict_list
+        })
+
 
 class EmailView(View):
     def put(self, request):

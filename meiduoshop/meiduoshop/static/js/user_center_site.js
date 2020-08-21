@@ -163,7 +163,7 @@ var vm = new Vue({
         },
         // 保存地址
         save_address: function () {
-            if (this.error_receiver || this.error_place || this.error_mobile || this.error_email || !this.form_address.province_id || !this.form_address.city_id || !this.form_address.district_id) {
+            if (this.error_mobile) {
                 alert('信息填写有误！');
             } else {
                 this.form_address.title = this.form_address.receiver;
@@ -230,14 +230,7 @@ var vm = new Vue({
                     // this.limit = response.data.limit;
                     this.default_address_id = response.data.default_address_id;
                 })
-                .catch(error => {
-                    status = error.response.status;
-                    if (status == 401 || status == 403) {
-                        location.href = 'login.html?next=/user_center_site.html';
-                    } else {
-                        // alert(error.response.data.detail);
-                    }
-                })
+               
         },
         // 设置默认地址
         set_default: function (index) {
